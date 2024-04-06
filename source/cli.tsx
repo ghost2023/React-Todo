@@ -3,6 +3,7 @@ import React from 'react';
 import {render} from 'ink';
 import meow from 'meow';
 import App from './app.js';
+import {config} from 'dotenv';
 
 const cli = meow(
 	`
@@ -25,6 +26,8 @@ const cli = meow(
 		},
 	},
 );
+
+config();
 
 const enterAltScreenCommand = '\x1b[?1049h';
 const leaveAltScreenCommand = '\x1b[?1049l';
