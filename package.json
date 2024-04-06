@@ -17,6 +17,7 @@
 	],
 	"dependencies": {
 		"@paralleldrive/cuid2": "^2.2.2",
+		"dotenv": "^16.4.5",
 		"ink": "^4.1.0",
 		"ink-text-input": "^5.0.1",
 		"meow": "^11.0.0",
