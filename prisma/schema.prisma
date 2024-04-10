@@ -1,0 +1,75 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:../source/db/data.db"
+}
+
+model Task {
+  id          Int      @id @default(autoincrement())
+  title       String   @unique
+  description String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  priority Int?
+  urgency  Int?
+  dueDate  DateTime?
+
+  projectId Int?
+  project   Project? @relation(fields: [projectId], references: [id])
+
+  status         String  @default("todo")
+  blockingReason String?
+
+  TaskTag TaskTag[]
+}
+
+model Project {
+  id    Int    @id @default(autoincrement())
+  title String @unique
+
+  deadLine  DateTime?
+  startDate DateTime?
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+
+  status String
+
+  Task       Task[]
+  ProjectTag ProjectTag[]
+}
+
+model Tag {
+  id         Int          @id @default(autoincrement())
+  name       String
+  createdAt  DateTime     @default(now())
+  updatedAt  DateTime     @updatedAt
+  TaskTag    TaskTag[]
+  ProjectTag ProjectTag[]
+}
+
+model TaskTag {
+  task_id Int
+  tag_id  Int
+
+  task Task @relation(fields: [task_id], references: [id])
+  tag  Tag  @relation(fields: [tag_id], references: [id])
+
+  @@id([task_id, tag_id])
+}
+
+model ProjectTag {
+  project_id Int
+  tag_id     Int
+
+  task Project @relation(fields: [project_id], references: [id])
+  tag  Tag     @relation(fields: [tag_id], references: [id])
+
+  @@id([project_id, tag_id])
+}
