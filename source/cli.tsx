@@ -1,9 +1,10 @@
 #!/usr/bin/env node
-import React from 'react';
+import {config} from 'dotenv';
 import {render} from 'ink';
 import meow from 'meow';
+import React from 'react';
 import App from './app.js';
-import {config} from 'dotenv';
+import {QueryClient, QueryClientProvider} from '@tanstack/react-query';
 
 const cli = meow(
 	`
@@ -36,4 +37,10 @@ process.on('exit', () => {
 	process.stdout.write(leaveAltScreenCommand);
 });
 
-render(<App name={cli.flags.name} />);
+const queryClient = new QueryClient();
+
+render(
+	<QueryClientProvider client={queryClient}>
+		<App name={cli.flags.name} />
+	</QueryClientProvider>,
+);
